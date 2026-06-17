@@ -1,4 +1,7 @@
 package estrella.tfg.usuario;
 
-public class UsuarioRepository {
+import estrella.tfg.usuario.model.Usuario;
+import org.springframework.data.repository.CrudRepository;
+
+public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 }
