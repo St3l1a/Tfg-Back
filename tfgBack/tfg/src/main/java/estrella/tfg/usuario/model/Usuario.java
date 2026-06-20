@@ -18,7 +18,7 @@ public class Usuario {
     @Column(name = "nombre", nullable = false)
     private String nombre;
 
-    @Column(name = "nombre", nullable = false)
+    @Column(name = "telefono", nullable = false)
     private String telefono;
 
     @Column(name = "profesional")
