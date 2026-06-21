@@ -3,7 +3,7 @@ package estrella.tfg.sentimiento.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "sentimiento")
 public class Sentimiento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

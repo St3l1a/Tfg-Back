@@ -14,8 +14,7 @@ public class Registro {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column
-    @JoinColumn(name = "sentimiento_id", nullable = false)
+    @Column(name = "sentimiento_id")
     private Long idSentimiento;
 
     @Column(name = "fecha")
