@@ -30,6 +30,11 @@ public class RegistroController {
         return registros.stream().map(e -> mapper.map(e, RegistroDto.class)).collect(Collectors.toList());
     }
 
+    @RequestMapping(path = "/{id}" , method = RequestMethod.GET)
+    public RegistroDto findById(@PathVariable(name = "id", required = true) Long id){
+        return this.registroService.findById(id);
+    }
+
 
     @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
     public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody RegistroDto dto) {

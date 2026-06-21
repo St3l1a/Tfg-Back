@@ -22,7 +22,8 @@ public class RegistroServiceImpl implements RegistroService {
     @Override
     public Registro get(Long id) {
 
-        return this.registroRepository.findById(id).orElse(null);
+        return registroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
     }
 
 
@@ -65,5 +66,16 @@ public class RegistroServiceImpl implements RegistroService {
     public List<Registro> findAll() {
 
         return (List<Registro>) this.registroRepository.findAll();
+    }
+
+    @Override
+    public RegistroDto findById(Long id){
+        RegistroDto result = new RegistroDto();
+        Registro registro =  registroRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
+
+        BeanUtils.copyProperties(registro, result);
+
+        return result;
     }
 }

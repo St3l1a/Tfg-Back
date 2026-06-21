@@ -31,5 +31,7 @@ public interface RegistroService {
      * @return {@link List} de {@link Registro}
      */
     List<Registro> findAll();
+
+    RegistroDto findById(Long id);
 }
 
