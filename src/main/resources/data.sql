@@ -13,7 +13,7 @@ VALUES
 INSERT INTO usuario
 (correo, nombre, telefono, profesional, contrasena, edad, sexo, pareja, familia, situacion_economica)
 VALUES
-    ('alex.lopez@gmail.com', 'Alex López', '622555444', false, 'alexpass', 22, 'M', 'Pareja estable', 'Independiente', 'Baja');
+    ('alex.lopez@gmail.com', 'Alex Lopez', '622555444', false, 'alexpass', 22, 'M', 'Pareja estable', 'Independiente', 'Baja');
 
 
 INSERT INTO sentimiento
@@ -49,7 +49,7 @@ VALUES
 INSERT INTO registro
 (sentimiento_id, fecha, nota)
 VALUES
-    (1, '2026-06-20', 'He tenido un buen día');
+    (1, '2026-06-20', 'He tenido un buen dia');
 
 
 INSERT INTO registro
