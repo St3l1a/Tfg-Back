@@ -30,6 +30,7 @@ public class UsuarioController {
     }
 
 
+
     @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
     public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody UsuarioDto dto) {
 
@@ -46,6 +47,14 @@ public class UsuarioController {
     public void delete(@PathVariable("id") Long id) throws Exception {
 
         this.usuarioService.delete(id);
+    }
+
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public UsuarioDto findById(@PathVariable("id") Long id) {
+
+        Usuario usuario = this.usuarioService.findById(id);
+
+        return mapper.map(usuario, UsuarioDto.class);
     }
 
 }

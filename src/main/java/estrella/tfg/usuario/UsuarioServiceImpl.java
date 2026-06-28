@@ -67,4 +67,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         return (List<Usuario>) this.usuarioRepository.findAll();
     }
+
+    public Usuario findById(Long id) {
+
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
 }
