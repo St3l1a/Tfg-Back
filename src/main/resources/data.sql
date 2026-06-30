@@ -46,31 +46,31 @@ VALUES
     ('Enfadado', '😡', 1);
 
 
-INSERT INTO registro
+INSERT INTO dia
 (sentimiento_id, fecha, nota)
 VALUES
     (1, '2026-06-20', 'He tenido un buen dia');
 
 
-INSERT INTO registro
+INSERT INTO dia
 (sentimiento_id, fecha, nota)
 VALUES
     (2, '2026-06-19', 'Estoy bastante contento hoy');
 
 
-INSERT INTO registro
+INSERT INTO dia
 (sentimiento_id, fecha, nota)
 VALUES
     (3, '2026-06-18', 'Día normal, sin cambios importantes');
 
 
-INSERT INTO registro
+INSERT INTO dia
 (sentimiento_id, fecha, nota)
 VALUES
     (4, '2026-06-17', 'He estado algo cansado y triste');
 
 
-INSERT INTO registro
+INSERT INTO dia
 (sentimiento_id, fecha, nota)
 VALUES
     (5, '2026-06-16', 'Me he enfadado por un problema en el trabajo');

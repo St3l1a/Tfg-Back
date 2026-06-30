@@ -14,7 +14,10 @@ public class Registro {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "sentimiento_id")
+    @Column(name = "id_dia")
+    private Long idDia;
+
+    @Column(name = "id_sentimiento")
     private Long idSentimiento;
 
     @Column(name = "fecha")
@@ -53,5 +56,13 @@ public class Registro {
 
     public void setNota(String nota) {
         this.nota = nota;
+    }
+
+    public Long getIdDia() {
+        return idDia;
+    }
+
+    public void setIdDia(Long idDia) {
+        this.idDia = idDia;
     }
 }

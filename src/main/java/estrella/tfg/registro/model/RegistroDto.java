@@ -7,6 +7,8 @@ import java.util.Date;
 public class RegistroDto {
     private Long id;
 
+    private Long idDia;
+
     private Long idSentimiento;
 
     private Date fecha;
@@ -43,5 +45,13 @@ public class RegistroDto {
 
     public void setNota(String nota) {
         this.nota = nota;
+    }
+
+    public Long getIdDia() {
+        return idDia;
+    }
+
+    public void setIdDia(Long idDia) {
+        this.idDia = idDia;
     }
 }
