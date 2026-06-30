@@ -2,6 +2,8 @@ package estrella.tfg.sentimiento;
 
 import estrella.tfg.sentimiento.model.Sentimiento;
 import estrella.tfg.sentimiento.model.SentimientoDto;
+import estrella.tfg.usuario.model.Usuario;
+import estrella.tfg.usuario.model.UsuarioDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,4 +48,11 @@ public class SentimientoController {
         this.sentimientoService.delete(id);
     }
 
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
+    public SentimientoDto findById(@PathVariable("id") Long id) {
+
+        Sentimiento sentimiento = this.sentimientoService.findById(id);
+
+        return mapper.map(sentimiento, SentimientoDto.class);
+    }
 }

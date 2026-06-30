@@ -13,8 +13,8 @@ public class Sentimiento {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "icono")
-    private String icono;
+    @Column(name = "color")
+    private String color;
 
     @Column(name = "valor")
     private int valor;
@@ -35,12 +35,12 @@ public class Sentimiento {
         this.nombre = nombre;
     }
 
-    public String getIcono() {
-        return icono;
+    public String getColor() {
+        return color;
     }
 
-    public void setIcono(String icono) {
-        this.icono = icono;
+    public void setColor(String icono) {
+        this.color = icono;
     }
 
     public int getValor() {

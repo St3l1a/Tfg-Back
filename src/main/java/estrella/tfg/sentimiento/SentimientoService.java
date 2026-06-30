@@ -31,5 +31,6 @@ public interface SentimientoService {
      * @return {@link List} de {@link Sentimiento}
      */
     List<Sentimiento> findAll();
+    Sentimiento findById(Long id);
 }
 

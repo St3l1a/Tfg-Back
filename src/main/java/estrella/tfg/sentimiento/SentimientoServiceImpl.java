@@ -2,6 +2,7 @@ package estrella.tfg.sentimiento;
 
 import estrella.tfg.sentimiento.model.Sentimiento;
 import estrella.tfg.sentimiento.model.SentimientoDto;
+import estrella.tfg.usuario.model.Usuario;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,5 +66,11 @@ public class SentimientoServiceImpl implements SentimientoService {
     public List<Sentimiento> findAll() {
 
         return (List<Sentimiento>) this.sentimientoRepository.findAll();
+    }
+
+    public Sentimiento findById(Long id) {
+
+        return sentimientoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sentimiento no encontrado"));
     }
 }
