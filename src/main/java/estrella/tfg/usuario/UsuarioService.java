@@ -32,6 +32,9 @@ public interface UsuarioService {
      * @return {@link List} de {@link Usuario}
      */
     List<Usuario> findAll();
+
     Usuario findById(Long id);
+
+    Long login(String correo, String password);
 }
 

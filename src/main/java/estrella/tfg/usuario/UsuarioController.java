@@ -57,4 +57,16 @@ public class UsuarioController {
         return mapper.map(usuario, UsuarioDto.class);
     }
 
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public Long login(  @RequestBody UsuarioDto dto ) {
+
+        Long usuario = this.usuarioService.login( dto.getCorreo(), dto.getContrasena());
+
+        if (usuario == null) {
+            new RuntimeException("Usuario no encontrado");
+        }
+
+        return usuario;
+    }
+
 }

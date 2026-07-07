@@ -68,9 +68,27 @@ public class UsuarioServiceImpl implements UsuarioService {
         return (List<Usuario>) this.usuarioRepository.findAll();
     }
 
+    @Override
     public Usuario findById(Long id) {
 
         return usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    }
+
+
+    @Override
+    public Long login(String correo, String password) {
+
+        Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
+
+        if (usuario == null) {
+            new RuntimeException("Usuario no encontrado");
+        }
+
+        if (!usuario.getContrasena().equals(password)) {
+            new RuntimeException("Datos no encontrado");
+        }
+
+        return usuario.getId();
     }
 }
