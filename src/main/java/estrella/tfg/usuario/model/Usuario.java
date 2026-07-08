@@ -39,7 +39,7 @@ public class Usuario {
     @Column(name = "familia")
     private String familia;
 
-    @Column(name = "situacionEconomica")
+    @Column(name = "situacion_economica")
     private String situacionEconomica;
 
     public Long getId() {
