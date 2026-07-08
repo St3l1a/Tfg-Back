@@ -1,7 +1,5 @@
 package estrella.tfg.usuario.model;
 
-import jakarta.persistence.Column;
-
 public class UsuarioDto {
     private Long id;
 
@@ -23,7 +21,7 @@ public class UsuarioDto {
 
     private String familia;
 
-    private String situacionEconomica;
+    private String situacion_economica;
 
     public Long getId() {
         return id;
@@ -105,11 +103,11 @@ public class UsuarioDto {
         this.familia = familia;
     }
 
-    public String getSituacionEconomica() {
-        return situacionEconomica;
+    public String getSituacion_economica() {
+        return situacion_economica;
     }
 
-    public void setSituacionEconomica(String situacionEconomica) {
-        this.situacionEconomica = situacionEconomica;
+    public void setSituacion_economica(String situacion_economica) {
+        this.situacion_economica = situacion_economica;
     }
 }

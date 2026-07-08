@@ -1,8 +1,6 @@
 package estrella.tfg.usuario.model;
 
 import jakarta.persistence.*;
-import org.hibernate.mapping.PrimaryKey;
-import org.springframework.context.annotation.Primary;
 
 @Entity
 @Table(name = "usuario")
@@ -40,7 +38,7 @@ public class Usuario {
     private String familia;
 
     @Column(name = "situacion_economica")
-    private String situacionEconomica;
+    private String situacion_economica;
 
     public Long getId() {
         return id;
@@ -114,12 +112,12 @@ public class Usuario {
         this.familia = familia;
     }
 
-    public String getSituacionEconomica() {
-        return situacionEconomica;
+    public String getSituacion_economica() {
+        return situacion_economica;
     }
 
-    public void setSituacionEconomica(String situacionEconomica) {
-        this.situacionEconomica = situacionEconomica;
+    public void setSituacion_economica(String situacionEconomica) {
+        this.situacion_economica = situacionEconomica;
     }
 
     public Character getSexo() {
