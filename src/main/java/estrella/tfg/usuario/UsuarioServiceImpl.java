@@ -82,11 +82,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
 
         if (usuario == null) {
-            new RuntimeException("Usuario no encontrado");
+            throw ((new RuntimeException("Usuario no encontrado")));
         }
 
         if (!usuario.getContrasena().equals(password)) {
-            new RuntimeException("Datos no encontrado");
+           throw ( new RuntimeException("Datos no encontrado"));
         }
 
         return usuario.getId();
