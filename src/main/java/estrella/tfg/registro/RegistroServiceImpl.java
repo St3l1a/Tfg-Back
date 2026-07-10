@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +26,8 @@ public class RegistroServiceImpl implements RegistroService {
         return registroRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
     }
+
+
 
 
     /**
@@ -78,4 +81,22 @@ public class RegistroServiceImpl implements RegistroService {
 
         return result;
     }
+    public List<RegistroDto> findByUserId(Long id){
+        List<RegistroDto> result = new ArrayList<>();
+
+        List<Registro> all = registroRepository.findRegistroByUserId(id);
+
+        if(all.isEmpty()){
+            throw new RuntimeException("Usuario no encontrado");
+
+        }
+        for(Registro r: all){
+
+            RegistroDto dto = new RegistroDto();
+            BeanUtils.copyProperties(r, dto);
+            result.add(dto);
+
+        }
+
+        return result;    }
 }

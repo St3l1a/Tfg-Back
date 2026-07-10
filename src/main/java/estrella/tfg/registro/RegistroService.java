@@ -33,5 +33,7 @@ public interface RegistroService {
     List<Registro> findAll();
 
     RegistroDto findById(Long id);
+
+    List<RegistroDto> findByUserId(Long id);
 }
 

@@ -35,6 +35,11 @@ public class RegistroController {
         return this.registroService.findById(id);
     }
 
+    @RequestMapping(path = "/user/{id}" , method = RequestMethod.GET)
+    public List<RegistroDto> findByUserId(@PathVariable(name = "id", required = true) Long id){
+        return this.registroService.findByUserId(id);
+    }
+
 
     @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
     public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody RegistroDto dto) {
