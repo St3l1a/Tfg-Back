@@ -87,16 +87,15 @@ public class RegistroServiceImpl implements RegistroService {
         List<Registro> all = registroRepository.findRegistroByUserId(id);
 
         if(all.isEmpty()){
-            throw new RuntimeException("Usuario no encontrado");
 
-        }
+
         for(Registro r: all){
 
             RegistroDto dto = new RegistroDto();
             BeanUtils.copyProperties(r, dto);
             result.add(dto);
 
-        }
+        }}
 
         return result;    }
 }
