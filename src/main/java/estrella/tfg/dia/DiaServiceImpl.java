@@ -43,9 +43,12 @@ public class DiaServiceImpl implements DiaService {
 
         BeanUtils.copyProperties(data, dia, "id");
 
-        this.diaRepository.save(dia);
+        Dia diaGuardado = this.diaRepository.save(dia);
 
-        return data;
+        // Mapear la entidad guardada a DTO para devolver con el id
+        DiaDto result = new DiaDto();
+        BeanUtils.copyProperties(diaGuardado, result);
+        return result;
     }
 
     /**
