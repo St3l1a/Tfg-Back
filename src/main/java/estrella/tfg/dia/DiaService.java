@@ -16,7 +16,7 @@ public interface DiaService {
      * @param id PK de la entidad
      * @param dto datos de la entidad
      */
-    void save(Long id, DiaDto dto);
+    DiaDto save(Long id, DiaDto dto);
 
     /**
      * Método para crear o actualizar un {@link Dia}

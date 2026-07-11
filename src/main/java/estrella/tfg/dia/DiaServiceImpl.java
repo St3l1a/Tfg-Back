@@ -31,19 +31,21 @@ public class DiaServiceImpl implements DiaService {
      * {@inheritDoc}
      */
     @Override
-    public void save(Long id, DiaDto data) {
+    public DiaDto save(Long id, DiaDto data) {
 
-        Dia usuario;
+        Dia dia;
 
         if (id == null) {
-            usuario = new Dia();
+            dia = new Dia();
         } else {
-            usuario = this.get(id);
+            dia = this.get(id);
         }
 
-        BeanUtils.copyProperties(data, usuario, "id");
+        BeanUtils.copyProperties(data, dia, "id");
 
-        this.diaRepository.save(usuario);
+        this.diaRepository.save(dia);
+
+        return data;
     }
 
     /**

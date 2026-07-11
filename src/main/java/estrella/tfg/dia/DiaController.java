@@ -36,9 +36,9 @@ public class DiaController {
 
 
     @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
-    public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody DiaDto dto) {
+    public DiaDto save(@PathVariable(name = "id", required = false) Long id, @RequestBody DiaDto dto) {
 
-        this.diaService.save(id, dto);
+        return this.diaService.save(id, dto);
     }
 
     /**
