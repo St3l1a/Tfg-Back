@@ -25,9 +25,7 @@ public class RegistroController {
 
     @RequestMapping(path = "", method = RequestMethod.GET)
     public List<RegistroDto> findAll() {
-        List<Registro> registros = this.registroService.findAll();
-
-        return registros.stream().map(e -> mapper.map(e, RegistroDto.class)).collect(Collectors.toList());
+        return registroService.findAll();
     }
 
     @RequestMapping(path = "/{id}" , method = RequestMethod.GET)
@@ -42,9 +40,8 @@ public class RegistroController {
 
 
     @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
-    public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody RegistroDto dto) {
-
-        this.registroService.save(id, dto);
+    public RegistroDto save(@PathVariable(name = "id", required = false) Long id, @RequestBody RegistroDto dto) {
+        return this.registroService.save(id, dto); // ahora devuelve RegistroDto
     }
 
     /**

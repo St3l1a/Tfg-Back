@@ -2,6 +2,7 @@ package estrella.tfg.registro.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class RegistroDto {
@@ -14,6 +15,9 @@ public class RegistroDto {
     private Date fecha;
 
     private String nota;
+
+    private Long valor;
+
 
     public Long getId() {
         return id;
@@ -54,4 +58,13 @@ public class RegistroDto {
     public void setIdDia(Long idDia) {
         this.idDia = idDia;
     }
+
+    public Long getValor() {
+        return valor;
+    }
+
+    public void setValor(Long valor) {
+        this.valor = valor;
+    }
+
 }

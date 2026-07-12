@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import javax.xml.crypto.Data;
 import java.beans.ConstructorProperties;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -19,9 +20,6 @@ public class Registro {
 
     @Column(name = "id_sentimiento")
     private Long idSentimiento;
-
-    @Column(name = "fecha")
-    private Date fecha;
 
     @Column(name = "nota")
     private String nota;
@@ -40,14 +38,6 @@ public class Registro {
 
     public void setIdSentimiento(Long idSentimiento) {
         this.idSentimiento = idSentimiento;
-    }
-
-    public Date getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
     }
 
     public String getNota() {

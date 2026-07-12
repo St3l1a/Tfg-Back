@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RegistroService {
 
-    Registro get(Long id);
+    RegistroDto get(Long id);
 
 
     /**
@@ -16,7 +16,7 @@ public interface RegistroService {
      * @param id PK de la entidad
      * @param dto datos de la entidad
      */
-    void save(Long id, RegistroDto dto);
+    RegistroDto save(Long id, RegistroDto dto);
 
     /**
      * Método para crear o actualizar un {@link Registro}
@@ -30,7 +30,7 @@ public interface RegistroService {
      *
      * @return {@link List} de {@link Registro}
      */
-    List<Registro> findAll();
+    List<RegistroDto> findAll();
 
     RegistroDto findById(Long id);
 

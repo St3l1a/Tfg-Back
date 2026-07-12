@@ -17,7 +17,7 @@ public class Sentimiento {
     private String color;
 
     @Column(name = "valor")
-    private int valor;
+    private Long valor;
 
     public Long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Sentimiento {
         this.color = icono;
     }
 
-    public int getValor() {
+    public Long getValor() {
         return valor;
     }
 
-    public void setValor(int valor) {
+    public void setValor(Long valor) {
         this.valor = valor;
     }
 }
