@@ -103,11 +103,11 @@ public class UsuarioDto {
         this.familia = familia;
     }
 
-    public String getSituacion_economica() {
+    public String getSituacionEconomica() {
         return situacion_economica;
     }
 
-    public void setSituacion_economica(String situacion_economica) {
+    public void setSituacionEconomica(String situacion_economica) {
         this.situacion_economica = situacion_economica;
     }
 }

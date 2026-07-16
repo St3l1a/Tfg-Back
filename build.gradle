@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.modelmapper:modelmapper:3.2.4'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation "com.cipherstash:cipherstash-java:..."
 	runtimeOnly 'org.postgresql:postgresql'
 	//runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

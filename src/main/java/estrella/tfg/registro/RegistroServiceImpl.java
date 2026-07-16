@@ -1,5 +1,6 @@
 package estrella.tfg.registro;
 
+import estrella.tfg.config.EncryptionService;
 import estrella.tfg.dia.DiaRepository;
 import estrella.tfg.dia.model.Dia;
 import estrella.tfg.registro.model.Registro;
@@ -27,9 +28,41 @@ public class RegistroServiceImpl implements RegistroService {
     @Autowired
     private DiaRepository diaRepository;
 
+    @Autowired
+    private EncryptionService encryptionService;
+
+    // ---------- MÉTODOS PRIVADOS DE CIFRADO ----------
+
     /**
-     * Obtiene un registro por su ID y lo convierte a DTO con fecha y valor.
+     * Cifra la nota del DTO (si no es null) y la asigna al registro.
      */
+    private void encryptNota(RegistroDto dto, Registro entity) {
+        if (dto.getNota() != null && !dto.getNota().isEmpty()) {
+            entity.setNota(encryptionService.encrypt(dto.getNota()));
+        } else {
+            // Si la nota es null o vacía, la dejamos como null (o vacía) en la entidad
+            entity.setNota(dto.getNota());
+        }
+    }
+
+    /**
+     * Descifra la nota de la entidad y la devuelve como String.
+     */
+    private String decryptNota(String encryptedNota) {
+        if (encryptedNota == null || encryptedNota.isEmpty()) {
+            return encryptedNota;
+        }
+        try {
+            return encryptionService.decrypt(encryptedNota);
+        } catch (Exception e) {
+            // Si falla el descifrado, devolvemos la nota cifrada o lanzamos excepción.
+            // Podemos lanzar RuntimeException para evitar datos corruptos.
+            throw new RuntimeException("Error al descifrar la nota", e);
+        }
+    }
+
+    // ---------- MÉTODOS PÚBLICOS ----------
+
     @Override
     public RegistroDto get(Long id) {
         Registro registro = registroRepository.findById(id)
@@ -37,48 +70,40 @@ public class RegistroServiceImpl implements RegistroService {
         return buildRegistroDto(registro);
     }
 
-    /**
-     * Guarda (crea o actualiza) un registro y devuelve el DTO completo.
-     */
     @Override
     public RegistroDto save(Long id, RegistroDto data) {
         Registro registro;
         if (id == null) {
             registro = new Registro();
         } else {
-            // Si existe, lo obtenemos como entidad (no como DTO)
             registro = registroRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Registro no encontrado"));
         }
 
-        // Copiar propiedades (idDia, idSentimiento, nota)
-        BeanUtils.copyProperties(data, registro, "id");
+        // Copiar propiedades simples (idDia, idSentimiento, etc.) excepto la nota
+        BeanUtils.copyProperties(data, registro, "id", "nota");
+
+        // Cifrar y asignar la nota
+        encryptNota(data, registro);
 
         // Guardar
-        Registro saved = this.registroRepository.save(registro);
+        Registro saved = registroRepository.save(registro);
 
-        // Construir DTO de respuesta
+        // Construir DTO de respuesta con la nota descifrada
         return buildRegistroDto(saved);
     }
 
-    /**
-     * Elimina un registro por su ID.
-     */
     @Override
     public void delete(Long id) throws Exception {
         if (!registroRepository.existsById(id)) {
             throw new Exception("Not exists");
         }
-        this.registroRepository.deleteById(id);
+        registroRepository.deleteById(id);
     }
 
-    /**
-     * Obtiene todos los registros como entidades (sin DTO).
-     * Si quieres devolver DTOs, puedes cambiar la firma.
-     */
     @Override
     public List<RegistroDto> findAll() {
-        List<Registro> registros = (List<Registro>) this.registroRepository.findAll();
+        List<Registro> registros = (List<Registro>) registroRepository.findAll();
         List<RegistroDto> result = new ArrayList<>();
         for (Registro r : registros) {
             result.add(buildRegistroDto(r));
@@ -86,10 +111,6 @@ public class RegistroServiceImpl implements RegistroService {
         return result;
     }
 
-    /**
-     * Busca un registro por ID y devuelve su DTO.
-     * (similar a get, pero con nombre más descriptivo)
-     */
     @Override
     public RegistroDto findById(Long id) {
         Registro registro = registroRepository.findById(id)
@@ -97,9 +118,6 @@ public class RegistroServiceImpl implements RegistroService {
         return buildRegistroDto(registro);
     }
 
-    /**
-     * Obtiene todos los registros de un usuario (por su ID) y los devuelve como DTOs.
-     */
     @Override
     public List<RegistroDto> findByUserId(Long userId) {
         List<Registro> registros = registroRepository.findRegistroByUserId(userId);
@@ -110,11 +128,14 @@ public class RegistroServiceImpl implements RegistroService {
         return result;
     }
 
-    // ---------- MÉTODO PRIVADO AUXILIAR ----------
+    // ---------- MÉTODO PRIVADO AUXILIAR PARA CONSTRUIR DTO ----------
     private RegistroDto buildRegistroDto(Registro registro) {
         RegistroDto dto = new RegistroDto();
-        // Copiar campos simples (id, idDia, idSentimiento, nota)
-        BeanUtils.copyProperties(registro, dto);
+        // Copiar campos simples (id, idDia, idSentimiento) pero NO la nota (la manejamos aparte)
+        BeanUtils.copyProperties(registro, dto, "nota");
+
+        // Descifrar la nota y asignarla al DTO
+        dto.setNota(decryptNota(registro.getNota()));
 
         // Obtener valor del sentimiento
         Long valor = 0L;
@@ -130,7 +151,7 @@ public class RegistroServiceImpl implements RegistroService {
         if (registro.getIdDia() != null) {
             Dia dia = diaRepository.findById(registro.getIdDia()).orElse(null);
             if (dia != null && dia.getFecha() != null) {
-                dto.setFecha(dia.getFecha()); // LocalDate
+                dto.setFecha(dia.getFecha());
             }
         }
 

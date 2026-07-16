@@ -1,94 +1,128 @@
 package estrella.tfg.usuario;
 
+import estrella.tfg.config.EncryptionService;
 import estrella.tfg.usuario.model.Usuario;
 import estrella.tfg.usuario.model.UsuarioDto;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Usuario get(Long id) {
+    @Autowired
+    private EncryptionService encryptionService;
 
-        return this.usuarioRepository.findById(id).orElse(null);
+    private void encryptAndCopy(UsuarioDto dto, Usuario entity) {
+        // Copiamos todo excepto los campos que vamos a cifrar manualmente
+        BeanUtils.copyProperties(dto, entity, "id", "contrasena", "correo", "nombre", "telefono", "pareja", "familia", "situacionEconomica");
+
+        // Ciframos los campos sensibles (todos String)
+        if (dto.getNombre() != null) entity.setNombre(encryptionService.encrypt(dto.getNombre()));
+        if (dto.getCorreo() != null) entity.setCorreo(encryptionService.encrypt(dto.getCorreo()));
+        if (dto.getTelefono() != null) entity.setTelefono(encryptionService.encrypt(dto.getTelefono()));
+        if (dto.getContrasena() != null) entity.setContrasena(encryptionService.encrypt(dto.getContrasena()));
+        if (dto.getPareja() != null) entity.setPareja(encryptionService.encrypt(dto.getPareja()));
+        if (dto.getFamilia() != null) entity.setFamilia(encryptionService.encrypt(dto.getFamilia()));
+        if (dto.getSituacionEconomica() != null) entity.setSituacion_economica(encryptionService.encrypt(dto.getSituacionEconomica()));
     }
 
+    private Usuario decryptEntity(Usuario entity) {
+        if (entity == null) return null;
 
-    /**
-     * {@inheritDoc}
-     */
+        // Creamos una nueva instancia (NO gestionada)
+        Usuario decrypted = new Usuario();
+
+        // Copiamos todas las propiedades excepto las que vamos a descifrar manualmente
+        BeanUtils.copyProperties(entity, decrypted,
+                "nombre", "correo", "telefono", "contrasena", "pareja", "familia", "situacionEconomica");
+
+        // Ahora desciframos los campos sensibles sobre la copia
+        if (entity.getNombre() != null) {
+            decrypted.setNombre(encryptionService.decrypt(entity.getNombre()));
+        }
+        if (entity.getCorreo() != null) {
+            decrypted.setCorreo(encryptionService.decrypt(entity.getCorreo()));
+        }
+        if (entity.getTelefono() != null) {
+            decrypted.setTelefono(encryptionService.decrypt(entity.getTelefono()));
+        }
+        // No desciframos la contraseña (se mantiene cifrada)
+        if (entity.getPareja() != null) {
+            decrypted.setPareja(encryptionService.decrypt(entity.getPareja()));
+        }
+        if (entity.getFamilia() != null) {
+            decrypted.setFamilia(encryptionService.decrypt(entity.getFamilia()));
+        }
+        if (entity.getSituacion_economica() != null) {
+            decrypted.setSituacion_economica(encryptionService.decrypt(entity.getSituacion_economica()));
+        }
+
+        // Aseguramos que el ID se copie (BeanUtils ya lo copia si no está excluido)
+        // Pero como no lo excluimos, se copia automáticamente.
+
+        return decrypted;
+    }
+
+    @Override
+    public Usuario get(Long id) {
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        return decryptEntity(usuario);
+    }
+
     @Override
     public void save(Long id, UsuarioDto data) {
-
         Usuario usuario;
-
         if (id == null) {
             usuario = new Usuario();
         } else {
-            usuario = this.get(id);
+            usuario = usuarioRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         }
-
-        BeanUtils.copyProperties(data, usuario, "id");
-
-        this.usuarioRepository.save(usuario);
+        encryptAndCopy(data, usuario);
+        usuarioRepository.save(usuario);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void delete(Long id) throws Exception {
-
-        if (this.get(id) == null) {
-            throw new Exception("Not exists");
+        if (!usuarioRepository.existsById(id)) {
+            throw new Exception("El usuario no existe");
         }
-
-        this.usuarioRepository.deleteById(id);
+        usuarioRepository.deleteById(id);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Usuario> findAll() {
-
-        return (List<Usuario>) this.usuarioRepository.findAll();
+        List<Usuario> usuarios = (List<Usuario>) usuarioRepository.findAll();
+        return usuarios.stream().map(this::decryptEntity).collect(Collectors.toList());
     }
 
     @Override
     public Usuario findById(Long id) {
-
-        return usuarioRepository.findById(id)
+        Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        return decryptEntity(usuario);
     }
-
 
     @Override
     public Long login(String correo, String password) {
-
-        Usuario usuario = usuarioRepository.findByCorreo(correo).orElse(null);
-
+        String correoCifrado = encryptionService.encrypt(correo);
+        Usuario usuario = usuarioRepository.findByCorreo(correoCifrado).orElse(null);
         if (usuario == null) {
-            throw ((new RuntimeException("Usuario no encontrado")));
+            throw new RuntimeException("Usuario no encontrado");
         }
-
-        if (!usuario.getContrasena().equals(password)) {
-           throw ( new RuntimeException("Datos no encontrado"));
+        String passwordCifrada = encryptionService.encrypt(password);
+        if (!usuario.getContrasena().equals(passwordCifrada)) {
+            throw new RuntimeException("Credenciales incorrectas");
         }
-
         return usuario.getId();
     }
 }
