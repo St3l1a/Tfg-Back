@@ -28,10 +28,10 @@ public class ShareController {
     }
 
 
-    @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
-    public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody ShareDto dto) {
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public void save(@PathVariable(name = "id", required = false) Long id,@RequestParam("correoProfresional") String correoProfresional) {
 
-        this.shareService.save(id, dto);
+        this.shareService.save(id, correoProfresional);
     }
 
 
