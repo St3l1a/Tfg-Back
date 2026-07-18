@@ -32,7 +32,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (dto.getContrasena() != null) entity.setContrasena(encryptionService.encrypt(dto.getContrasena()));
         if (dto.getPareja() != null) entity.setPareja(encryptionService.encrypt(dto.getPareja()));
         if (dto.getFamilia() != null) entity.setFamilia(encryptionService.encrypt(dto.getFamilia()));
-        if (dto.getSituacionEconomica() != null) entity.setSituacion_economica(encryptionService.encrypt(dto.getSituacionEconomica()));
+        if (dto.getSituacionEconomica() != null) entity.setSituacionEconomica(encryptionService.encrypt(dto.getSituacionEconomica()));
     }
 
     private Usuario decryptEntity(Usuario entity) {
@@ -62,8 +62,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         if (entity.getFamilia() != null) {
             decrypted.setFamilia(encryptionService.decrypt(entity.getFamilia()));
         }
-        if (entity.getSituacion_economica() != null) {
-            decrypted.setSituacion_economica(encryptionService.decrypt(entity.getSituacion_economica()));
+        if (entity.getSituacionEconomica() != null) {
+            decrypted.setSituacionEconomica(encryptionService.decrypt(entity.getSituacionEconomica()));
         }
 
         // Aseguramos que el ID se copie (BeanUtils ya lo copia si no está excluido)

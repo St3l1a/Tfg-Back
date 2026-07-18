@@ -38,7 +38,7 @@ public class Usuario {
     private String familia;
 
     @Column(name = "situacion_economica")
-    private String situacion_economica;
+    private String situacionEconomica;
 
     public Long getId() {
         return id;
@@ -112,12 +112,12 @@ public class Usuario {
         this.familia = familia;
     }
 
-    public String getSituacion_economica() {
-        return situacion_economica;
+    public String getSituacionEconomica() {
+        return situacionEconomica;
     }
 
-    public void setSituacion_economica(String situacionEconomica) {
-        this.situacion_economica = situacionEconomica;
+    public void setSituacionEconomica(String situacionEconomica) {
+        this.situacionEconomica = situacionEconomica;
     }
 
     public Character getSexo() {
