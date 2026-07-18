@@ -16,6 +16,14 @@ public interface ShareRepository  extends CrudRepository<Share, Long> {
         """, nativeQuery = true)
     List<Long> obtenerUsuariosCompartidos(@Param("idProfesional") Long idProfesional);
 
+
+    @Query(value = """
+        SELECT c.id_profesional FROM compartir_datos c WHERE c.id_usuario = :idUsuario
+        """, nativeQuery = true)
+    List<Long> obtenerRelacionesDeUsuario(@Param("idUsuario") Long idUsuario);
+
+
+
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM compartir_datos WHERE id_usuario = :idUsuario AND id_profesional = :idProfesional", nativeQuery = true)

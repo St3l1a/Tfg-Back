@@ -23,6 +23,13 @@ public class ShareServiceImpl implements ShareService{
     }
 
     @Override
+    public List<Long> obtenerRelacionesDeUsuario(Long id){
+        List<Long> result = new ArrayList<>();
+        result =  this.shareRepository.obtenerRelacionesDeUsuario(id);
+        return result;
+    }
+
+    @Override
     public void save(Long id, ShareDto data) {
 
         Share Share;
