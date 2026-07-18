@@ -1,6 +1,7 @@
 package estrella.tfg.share;
 
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,4 +22,28 @@ public class ShareServiceImpl implements ShareService{
         return result;
     }
 
+    @Override
+    public void save(Long id, ShareDto data) {
+
+        Share Share;
+
+        Share = new Share();
+
+        BeanUtils.copyProperties(data, Share, "id");
+
+        this.shareRepository.save(Share);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean eliminarCompartirDatos(Long idUsuario, Long idProfesional) {
+        long existentes = shareRepository.countByUsuarioAndProfesional(idUsuario, idProfesional);
+        if (existentes == 0) {
+            return false;
+        }
+        shareRepository.deleteByUsuarioAndProfesional(idUsuario, idProfesional);
+        return true;
+    }
 }

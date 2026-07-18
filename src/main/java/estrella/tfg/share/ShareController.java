@@ -2,7 +2,10 @@ package estrella.tfg.share;
 
 
 import estrella.tfg.registro.model.RegistroDto;
+import estrella.tfg.sentimiento.model.Sentimiento;
+import estrella.tfg.sentimiento.model.SentimientoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,4 +21,23 @@ public class ShareController {
     public List<Long> obtenerUsuariosCompartidos(@PathVariable("id") Long idProfesional) {
         return shareService.getUsersWhoSharedWith(idProfesional);
     }
+    @RequestMapping(path = { "", "/{id}" }, method = RequestMethod.PUT)
+    public void save(@PathVariable(name = "id", required = false) Long id, @RequestBody ShareDto dto) {
+
+        this.shareService.save(id, dto);
+    }
+
+
+    @RequestMapping(path = "", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete( @RequestParam("idUsuario") Long idUsuario,
+                        @RequestParam("idProfesional") Long idProfesional) {
+
+        boolean eliminado = shareService.eliminarCompartirDatos(idUsuario, idProfesional);
+        if (eliminado) {
+            return ResponseEntity.noContent().build(); // 204
+        } else {
+            return ResponseEntity.notFound().build(); // 404
+        }
+    }
+
 }
